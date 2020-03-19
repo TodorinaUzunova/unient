@@ -1,6 +1,7 @@
 <template>
   <div id="app">
       <app-navigation></app-navigation>
+      <app-home></app-home>
       <app-footer></app-footer>
   </div>
 </template>
@@ -8,25 +9,27 @@
 <script>
 import AppNavigation from './components/core/Navigation.vue';
 import AppFooter from './components/core/Footer.vue';
+import AppHome from './components/Home.vue';
 
 export default {
   name: 'App',
   components: {
     AppNavigation,
-    AppFooter
+    AppFooter,
+    AppHome
   }
 }
 </script>
 
 <style>
-.container {
+/* .container {
   max-width: 960px;
 }
 
 a{
   text-decoration: none;
   cursor:pointer;
-}
+} */
 
 
 /*
@@ -292,37 +295,5 @@ transform: translate(-50%, -50%);
   margin: 0 auto;
 }
 
-.container {
-  max-width: 960px;
-}
 
-
-a {
-  display: inline-block;
-  text-decoration: none;
-  font-size: 15px;
-  padding: 14px;
-  cursor: pointer;
-}
-.topnav {
-  overflow: hidden;
-  background-color: #333;
-}
-
-.topnav a {
-  float: left;
-  color: #999;
-  text-align: center;
-  padding: 16px 20px;
-  text-decoration: none;
-  font-size: 20px;
-}
-.topnav a:hover {
-     color: #fff;;
-}
-
-
-.topnav-right {
-  float: right;
-}
 </style>
