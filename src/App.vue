@@ -1,35 +1,46 @@
 <template>
   <div id="app">
       <app-navigation></app-navigation>
-      <app-home></app-home>
+      <!-- <app-home></app-home> -->
+      <!-- <app-event-list></app-event-list> -->
+      <!-- <app-event-details></app-event-details> -->
+      <app-register></app-register>
       <app-footer></app-footer>
   </div>
 </template>
 
 <script>
 import AppNavigation from './components/core/Navigation.vue';
+import AppRegister from './components/Register.vue';
 import AppFooter from './components/core/Footer.vue';
-import AppHome from './components/Home.vue';
+//import AppHome from './components/Home.vue';
+//import AppEventList from './components/EventList.vue';
+//import AppEventDetails from './components/EventDetails.vue';
+
+
 
 export default {
   name: 'App',
   components: {
     AppNavigation,
+    AppRegister,
     AppFooter,
-    AppHome
+    //AppHome,
+    //AppEventList,
+    //AppEventDetails,
   }
 }
 </script>
 
 <style>
-/* .container {
+.container {
   max-width: 960px;
 }
 
 a{
   text-decoration: none;
   cursor:pointer;
-} */
+}
 
 
 /*
