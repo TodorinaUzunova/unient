@@ -1,7 +1,7 @@
 <template>
 <nav class="site-header sticky-top py-1">
    <div class="topnav"> 
-      <router-link to="/home" class="py-2" href="#">
+      <router-link to="/" class="py-2" exact>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -22,10 +22,10 @@
           ></path>
         </svg>
       </router-link>
-      <router-link to="/create" class="py-2 d-none d-md-inline-block" href="#">Organize Event</router-link>
-      <router-link to="/profile" class="py-2 d-none d-md-inline-block" href="#">USERNAME</router-link>
+      <router-link to="/create" class="py-2 d-none d-md-inline-block">Organize Event</router-link>
+      <router-link to="/profile" class="py-2 d-none d-md-inline-block" >USERNAME</router-link>
       <a class="py-2 d-none d-md-inline-block" href="#">Logout</a>
-      <router-link to="/login" class="py-2 d-none d-md-inline-block" href="#">Login</router-link>
+      <router-link to="/login" class="py-2 d-none d-md-inline-block">Login</router-link>
     </div>
   </nav>
 </template>

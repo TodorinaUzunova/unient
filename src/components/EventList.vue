@@ -9,8 +9,8 @@
         <div class="img"><img class="eventPicture"
             :src="event.imageURL" />
         </div>
-        <router-link :to="({path:`/details/${event._id}`})">
-          <button  class="eventDetails">More</button>
+        <router-link :to="({path:`/details/${event._id}`})" tag="button"  class="eventDetails">
+          More
         </router-link>
         {{$route.params.id}}
       </div>
@@ -116,11 +116,27 @@ export default {
     type:String
   }
   }},
+  // selectedEventId:{
+  //    type:String,
+
+  // },
    validations: {
        events: {
          arrayValidator
        }
-}}
+},
+// methods:{
+   //@click="selectEventHandler(`${event._id}`)"
+//        selectEventHandler(id) {
+//       this.selectedEventId = id;
+//     },
+// },
+// computed:{
+//   selectedEvent(){
+//     return this.events[this.selectedEventId];
+//   }
+// }
+}
  
 </script>
 
