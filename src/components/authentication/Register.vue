@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="success">Registration successfull!</div>
-    <form @submit.prevent="submitHandler">
+    <form @submit.prevent="handleRegister">
       <div class="text-center mb-4">
         <h1 class="h3 mb-3 font-weight-normal">Register</h1>
         <p>Register yourself once and create/join awesome events!</p>
@@ -72,7 +72,7 @@
         :disabled="$v.$invalid"
         class="btn btn-lg btn-dark btn-block"
         type="submit"
-        @click="register()"
+       
       >Register</button>
 
       <div class="text-center mb-4">
@@ -100,6 +100,7 @@ import {
   sameAs
 } from "vuelidate/lib/validators";
 import { helpers } from "vuelidate/lib/validators";
+import axiosAuth from '@/axios-auth.js';
 
 // function sameAs(field) {
 //   return function(value) {
@@ -135,20 +136,28 @@ export default {
     }
   },
   methods: {
-    submitHandler() {
+    async handleRegister() {
       this.$v.$touch();
       if (this.$v.$invalid) {
         return;
       }
-      console.log("Form is submitted!");
-      this.success = true;
-    },
-    register() {
-      // Login using fetch/axios/vue-resource
-
-      this.$router.push("login");
-    }
-  }
+      try {
+        const payload = {
+        username: this.username,
+        password: this.password,
+      };
+       const result =await axiosAuth.post('', payload)  
+        console.log(result.data);
+        // localStorage.setItem('token', result.data._kmd.authtoken);
+        // localStorage.setItem('userInfo', JSON.stringify(result.data));
+           this.success = true;
+         console.log("Form is submitted!");
+        this.$router.push('/login');
+      } catch (error) {
+        console.log(error);
+             this.$v.$reset();
+      }}
+   }
 };
 </script>
 

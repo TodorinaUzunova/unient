@@ -1,12 +1,15 @@
 <template>
-    <form @submit.prevent="submitHandler">
+<div>
+<div v-if="isLoading">Loading...</div>
+<div v-if="success">Event edited successfully!</div>
+    <form @submit.prevent="submitEditHandler">
     <div class="text-center mb-4">
-      <h1 class="h3 mb-3 font-weight-normal">Organize Event</h1>
+      <h1 class="h3 mb-3 font-weight-normal">Edit Event</h1>
       <p>Fill up the following information!</p>
     </div>
 
     <div class="form-label-group">
-      <label for="inputEventName">Edit Event</label>
+      <label for="inputEventName">Event</label>
       <input type="text" id="inputEventName" v-model.lazy="name" class="form-control" placeholder="Event"  @blur="$v.name.$touch">
      <template v-if="$v.name.$error" >
         <div v-if="!$v.name.required" class="alert alert-danger">Event's name is required!</div>
@@ -40,14 +43,13 @@
 
      <div style="display: none">
       <input class="form-control"  v-model.number ="peopleInterestedIn" />
-      <input  class="form-control"  v-model="organizer"  />
-       <!-- [value]="isOrganizer" -->
+      <input class="form-control"  v-model="organizer"  />
     </div>
     <button :disabled="$v.$invalid" class="btn btn-lg btn-dark btn-block">Edit it</button>
     
     <p class="mt-5 mb-3 text-muted text-center">© UniEnt - 2020.</p>
 </form>
-
+</div>
 </template>
 
 <script>
@@ -57,9 +59,14 @@ Vue.use(Vuelidate)
 import { validationMixin } from "vuelidate";
 import { required, email, integer} from "vuelidate/lib/validators";
 
+import axiosAuth from '@/axios-auth.js';
+
 export default {
     name:'app-event-edit',
     mixins:validationMixin,
+  //   props:{
+  //  selectedEvent:Object
+  //   },
     // props:{
     //        name:{
     //          type:String,
@@ -88,12 +95,16 @@ export default {
     // },
     data(){
       return{
+          selectedEventId:this.$route.params.id,
+          selectedEvent:Object,
           name:'',
-          dateTime:null,
+          dateTime:'',
           description:'',
           imageURL:'',
           peopleInterestedIn:0,
-          organizer:''
+          organizer:'',
+          isLoading:true,
+          success:false         
       }
 
     },
@@ -118,13 +129,52 @@ export default {
           }
 
     },
+    created(){
+      this.getEventById();
+    },
     methods:{
-        submitHandler(){
-            this.$v.$touch;
-            if(this.$v.$invalid){return}
-            console.log('Form is submitted!');
-        }
-    }
+        async getEventById() {
+      try {
+        const response = await axiosAuth.get(`events/${this.selectedEventId}`);
+        console.log(this.$route.params.id);
+        this.selectedEvent = response.data;
+        console.log(response);
+         this.name=this.selectedEvent.name,
+         this.dateTime=this.selectedEvent.dateTime,
+         this.description=this.selectedEvent.description,
+         this.imageURL=this.selectedEvent.imageURL,
+         this.peopleInterestedIn=this.selectedEvent.peopleInterestedIn,
+         this.organizer=this.selectedEvent.organizer
+        this.isLoading = false;
+      } catch (error) {
+        console.log(error);
+      }},
+
+         async  submitEditHandler() {
+      this.$v.$touch();
+      if (this.$v.$error) {
+        return;
+      }
+       try {
+        const payload = {
+          name:this.name,
+          dateTime:this.dateTime,
+          description:this.description,
+          imageURL:this.imageURL,
+          peopleInterestedIn:this.peopleInterestedIn,
+          organizer:localStorage.getItem('username')
+        };
+        const response = await axiosAuth.put(`events/${this.selectedEvent._id}`, payload);
+        console.log(response.data);
+        console.log("Form is editted!");
+        this.$router.push("/events/all");
+        this.success = true;
+      } catch (error) {
+        console.log(error);
+        this.$v.$reset();
+      }}
+    },
+    
 }
 </script>
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="success">Login successfull!</div>
-    <form  @submit.prevent="submitHandler">
+    <form @submit.prevent="handleLogin">
       <div class="text-center mb-4">
         <h1 class="h3 mb-3 font-weight-normal">Login</h1>
         <p>You are on one step of awesome events!</p>
@@ -49,7 +49,7 @@
         </template>
       </div>
 
-      <button class="btn btn-lg btn-dark btn-block" type="submit" @click="login()">Login</button>
+      <button class="btn btn-lg btn-dark btn-block" type="submit">Login</button>
 
       <div class="text-center mb-4">
         <p class="alreadyUser">
@@ -75,11 +75,15 @@ import {
   email
 } from "vuelidate/lib/validators";
 import { helpers } from "vuelidate/lib/validators";
+import axiosAuth from "@/axios-auth.js";
 
 const alphanumeric = helpers.regex("alphanumeric", /^[A-Za-z0-9]*$/);
 export default {
   name: "app-login",
   mixins: [validationMixin],
+  props: {
+    isLoggedIn: Boolean
+  },
   data() {
     return {
       username: "",
@@ -100,18 +104,30 @@ export default {
     }
   },
   methods: {
-    submitHandler() {
+    async handleLogin() {
+      // Login using fetch/axios/vue-resource
       this.$v.$touch();
       if (this.$v.$invalid) {
         return;
       }
-      console.log("Form is submitted!");
-      this.success = true;
-    },
-    login() {
-      // Login using fetch/axios/vue-resource
-
-      this.$router.push("home");
+      try {
+        const payload = {
+          username: this.username,
+          password: this.password
+        };
+        const response = await axiosAuth.post("login", payload);
+        console.log(response.data);
+        localStorage.setItem("token", response.data._kmd.authtoken);
+        // localStorage.setItem("userInfo", JSON.stringify(response.data));
+        localStorage.setItem("username", response.data.username);
+        localStorage.setItem("userId", response.data._id);
+        console.log("Form is submitted!");
+        this.$router.push("/events/all");
+        this.success = true;
+      } catch (error) {
+        console.log(error);
+        this.$v.$reset();
+      }
     }
   }
 };

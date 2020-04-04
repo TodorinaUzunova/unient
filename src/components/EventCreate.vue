@@ -84,6 +84,7 @@ import {
  required
 } from "vuelidate/lib/validators";
 import { helpers } from "vuelidate/lib/validators";
+import axiosAuth from '@/axios-auth.js';
 
 const isURL=helpers.regex('url', /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g);
 
@@ -115,15 +116,30 @@ export default {
     }
   },
   methods: {
-    submitHandler() {
+  async  submitHandler() {
       this.$v.$touch();
       if (this.$v.$error) {
         return;
       }
-      console.log("Form is submitted!");
-      this.success = true;
-    }
-  },
+       try {
+        const payload = {
+          name: this.name,
+          dateTime: this.dateTime,
+          description:this.description,
+          imageURL:this.imageURL,
+          peopleInterestedIn:0,
+          organizer:localStorage.getItem('username'),
+        };
+        const result = await axiosAuth.post('events', payload);
+        console.log(result.data);
+        console.log("Form is submitted!");
+        this.$router.push("/events/all");
+        this.success = true;
+      } catch (error) {
+        console.log(error);
+        this.$v.$reset();
+      }}
+    },
   components:{
       VueEditor
       }

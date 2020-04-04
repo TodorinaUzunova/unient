@@ -1,6 +1,5 @@
 <template>
-  <app-main>
-    <template v-slot:main>
+<div v-if="!isLoggedIn">
       <div class="d-md-flex flex-md-equal w-100 my-md-3 pl-md-3">
         <div style=" padding-left: 7%; padding-top:3%;" class="col-md-7">
           <h2 class="featurette-heading">
@@ -21,16 +20,18 @@
           <img class="home-event-picture" src="events-concept-600w-580432891.webp" />
         </div>
       </div>
-    </template>
-  </app-main>
+</div>
 </template>
 
 <script>
-import AppMain from "../components/shared/Main.vue";
+
 export default {
   name: "app-home",
+    props: {
+    isLoggedIn: Boolean
+  },
   components: {
-    AppMain
+  
   },
   data() {
     return {};

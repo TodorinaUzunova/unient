@@ -1,25 +1,25 @@
 <template>
   <div id="app">
-      <app-navigation></app-navigation>
+    <app-navigation @onAuth="isLoggedIn=$event" :isLoggedIn="isLoggedIn"></app-navigation>
 
-      <router-view></router-view>
-      <!-- <app-home></app-home> -->
-      <!-- <app-event-list :events="events" ></app-event-list> -->
-         <!-- <app-not-found></app-not-found> -->
-         <!-- <app-event-create></app-event-create> -->
-      <!-- <app-event-details></app-event-details> -->
-      <!-- <app-event-edit></app-event-edit> -->
-       <!-- <app-login></app-login> -->
-      <!-- <app-register></app-register> -->
-      <app-footer></app-footer>
+    <router-view @onAuth="isLoggedIn=$event" :isLoggedIn="isLoggedIn"></router-view>
+    <!-- <app-home></app-home> -->
+    <!-- <app-event-list :events="events" ></app-event-list> -->
+    <!-- <app-not-found></app-not-found> -->
+    <!-- <app-event-create></app-event-create> -->
+    <!-- <app-event-details></app-event-details> -->
+    <!-- <app-event-edit></app-event-edit> -->
+    <!-- <app-login></app-login> -->
+    <!-- <app-register></app-register> -->
+    <app-footer></app-footer>
   </div>
 </template>
 
 <script>
-import AppNavigation from './components/core/Navigation.vue';
+import AppNavigation from "./components/core/Navigation.vue";
 //import AppRegister from './components/authentication/Register.vue';
 //import AppLogin from './components/authentication/Login.vue';
-import AppFooter from './components/core/Footer.vue';
+import AppFooter from "./components/core/Footer.vue";
 //import AppHome from './components/Home.vue';
 //import AppEventList from './components/EventList.vue';
 //import AppNotFound from './components/NotFound.vue';
@@ -28,15 +28,13 @@ import AppFooter from './components/core/Footer.vue';
 //import AppEventCreate from './components/EventCreate.vue';
 //import AppProfile from '@/components/user/Profile.vue';
 
-
-
 export default {
-  name: 'App',
-   components: {
+  name: "App",
+  components: {
     AppNavigation,
     //AppRegister,
     //AppLogin,
-    AppFooter,
+    AppFooter
     //AppHome,
     //AppEventList,
     // AppNotFound,
@@ -44,10 +42,14 @@ export default {
     //AppEventDetails,
     //AppEventEdit,
     //AppProfile
-    
-
+  },
+  data: function() {
+    return {
+      isLoggedIn: localStorage.getItem("token") !== null,
+      
+    };
   }
-}
+};
 </script>
 
 <style>
@@ -55,24 +57,23 @@ export default {
   max-width: 960px;
 }
 
-a{
+a {
   text-decoration: none;
-  cursor:pointer;
+  cursor: pointer;
 }
-
 
 /*
  * Custom translucent site header
  */
 
 .site-header {
-  background-color: rgba(0, 0, 0, .85);
+  background-color: rgba(0, 0, 0, 0.85);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   backdrop-filter: saturate(180%) blur(20px);
 }
 .site-header a {
   color: #999;
-  transition: ease-in-out color .15s;
+  transition: ease-in-out color 0.15s;
 }
 .site-header a:hover {
   color: #fff;
@@ -102,7 +103,7 @@ a{
   bottom: 10%;
   left: 10px;
   content: "";
-  background-color: rgba(255, 255, 255, .1);
+  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 5px;
 }
 
@@ -113,7 +114,6 @@ a{
   left: 5%;
   background-color: #e5e5e5;
 }
-
 
 /*
  * Extra utilities
@@ -130,32 +130,33 @@ a{
   }
 }
 
-.overflow-hidden { overflow: hidden; }
-
-footer p{
-    margin-left: 1%;
+.overflow-hidden {
+  overflow: hidden;
 }
 
+footer p {
+  margin-left: 1%;
+}
 
-.eventPicture{
+.eventPicture {
   /* width: 500px;
   height: auto; */
 }
 
-.eventDetails{
-    display: block;
-    border:2px solid black;
-    color: black;      
-    width: 25%;
-    margin: 1.5rem auto 48px auto;      
-    text-align: center;      
-    border-radius: 15px;    
-    font-size: 18px;
-    padding: 0.5rem 0;  
-    font-weight: bold;
+.eventDetails {
+  display: block;
+  border: 2px solid black;
+  color: black;
+  width: 25%;
+  margin: 1.5rem auto 48px auto;
+  text-align: center;
+  border-radius: 15px;
+  font-size: 18px;
+  padding: 0.5rem 0;
+  font-weight: bold;
 }
 
-a.eventDetails:hover{
+a.eventDetails:hover {
   /* text-decoration: underline;
   color: black; */
   background: #333;
@@ -163,142 +164,137 @@ a.eventDetails:hover{
   border: 2px solid #333;
 }
 
-form{
-    width: 80%;
-    margin: 0 auto;
+form {
+  width: 80%;
+  margin: 0 auto;
 }
 
-input.form-control{
-    width: 50%;
-    margin: 0 auto;
+input.form-control {
+  width: 50%;
+  margin: 0 auto;
 }
 
-textarea.form-control{
-    width: 50%;
-    margin: 0 auto;
-    resize: none;
-    height: 20vh;
+textarea.form-control {
+  width: 50%;
+  margin: 0 auto;
+  resize: none;
+  height: 20vh;
 }
 
-form label{
-  display:block;
+form label {
+  display: block;
   margin: 0 auto;
   width: 50%;
   text-align: center;
   margin-bottom: 2%;
 }
 
-.btn{
-
+.btn {
   width: 25%;
   margin: 0 auto;
   color: white;
 }
 
-.alreadyUser{
-   margin: 1%;
+.alreadyUser {
+  margin: 1%;
 }
 
-
-.error-template{
-   margin: 0 auto;
-   text-align: center;
+.error-template {
+  margin: 0 auto;
+  text-align: center;
 }
 
-#fouronefour{
-   margin: 0 auto;
-   width: 38%;
+#fouronefour {
+  margin: 0 auto;
+  width: 38%;
 }
 
-.alert{
-   width: 100%;
-   margin: 0 auto;
-   text-align: center;
-   margin-top: 1%;
-   margin-bottom: 3%;
+.alert {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 1%;
+  margin-bottom: 3%;
 }
 
-.alert-danger{
-  
+.alert-danger {
   text-decoration-color: red;
 }
 
-
-.imageContainer{
-   border:2px solid black;
-   border-radius: 21px;
+.imageContainer {
+  border: 2px solid black;
+  border-radius: 21px;
 }
 
-.event-details{
-   padding: 2%;
-   margin: 2%;
+.event-details {
+  padding: 2%;
+  margin: 2%;
 }
 
-.infoType{
-   text-decoration: underline;
+.infoType {
+  text-decoration: underline;
 }
 
-.event-description{
-   font-style: italic;
+.event-description {
+  font-style: italic;
 }
 
 /* ------------------------------------------------------------------------------------------------------------------------ */
 
-#successBox, #loadingBox, #errorBox{
-display: none;
+#successBox,
+#loadingBox,
+#errorBox {
+  display: none;
 }
 
-nav{
-margin-bottom: 2%;
+nav {
+  margin-bottom: 2%;
 }
 
-.eventPlaceholder{
-flex: 0 1 45%;
-margin-bottom: 20px;
+.eventPlaceholder {
+  flex: 0 1 45%;
+  margin-bottom: 20px;
 }
 
-#eventsHolder{
-width: 100%;
-display: flex;
-flex-wrap: wrap;
-justify-content: space-around;
+#eventsHolder {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
-.img{
+.img {
   display: block;
   position: relative;
   overflow: hidden;
-  border: 1px solid #000;  /* border */
-  background: #FFF;
-  box-shadow: 0 0 0.9rem 0 rgba(0,0,0,0.3);
+  border: 1px solid #000; /* border */
+  background: #fff;
+  box-shadow: 0 0 0.9rem 0 rgba(0, 0, 0, 0.3);
 }
 
-
 .img:before {
-display: block;
-content: '';
-padding-top: 100%;
+  display: block;
+  content: "";
+  padding-top: 100%;
 }
 
 img {
-display: block;
-width: 100%;
-height: auto;
-position: absolute;
-top: 50%;
-left: 50%;
-transform: translate(-50%, -50%);
-
+  display: block;
+  width: 100%;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
-@media screen and (max-width:900px){
-.eventPlaceholder{
-  flex: 0 1 80%;
- 
-}
+@media screen and (max-width: 900px) {
+  .eventPlaceholder {
+    flex: 0 1 80%;
+  }
 }
 
-.profile-img{
+.profile-img {
   margin: 0 auto;
   width: 150px;
   height: auto;
@@ -308,11 +304,11 @@ transform: translate(-50%, -50%);
   transform: none;
 }
 
-.profile-info{
+.profile-info {
   padding: 0;
 }
 
-.details-img{
+.details-img {
   width: 40%;
   height: auto;
   margin: 0 auto;
@@ -320,17 +316,16 @@ transform: translate(-50%, -50%);
   top: 0;
   left: 0;
   transform: none;
-  border:1px solid black;
+  border: 1px solid black;
 }
 
-.no-found-picture, .home-event-picture{
-  top:0;
-  left:0;
+.no-found-picture,
+.home-event-picture {
+  top: 0;
+  left: 0;
   transform: none;
   width: 100%;
   position: static;
   margin: 0 auto;
 }
-
-
 </style>

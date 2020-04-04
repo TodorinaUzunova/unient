@@ -11,7 +11,7 @@
     
   
         <v-card-text class="py-2 white--text text-center">
-          © UniEnt - One application proudly built in BULGARIA!   {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+          © UniEnt - One application proudly built in BULGARIA!   {{getYear}} — <strong>Vuetify</strong>
         </v-card-text>
       </v-card>
     </v-footer>
@@ -44,6 +44,11 @@ export default {
       'fab fa-instagram',
     ]
    }),
+   computed:{
+     getYear(){
+       return new Date().getFullYear();
+     }
+   }
 }
 </script>
 
