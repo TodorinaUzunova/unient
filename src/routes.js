@@ -14,9 +14,10 @@ const routes =  [
     { path: '/home', component: AppHome },
     { path: '/login', component: AppLogin },
     { path: '/register', component: AppRegister },
-    { path: '/event/create', component: AppEventCreate },
-    { path: '/event/details/:id', component: AppEventDetails },
-    { path: '/event/edit/:id', component: AppEventEdit },
+    { path: '/create', component: AppEventCreate },
+    { path: '/details/:id', component: AppEventDetails },
+    { path: '/edit/:id', component: AppEventEdit },
     { path: '/user/profile/:id', component: AppProfile },
+    { path: '*', component: AppPageNotFound },
    
 ]   
