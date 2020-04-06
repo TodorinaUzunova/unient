@@ -63,10 +63,10 @@ export default {
     },
     async getEventById() {
       try {
-        const result = await axiosAuth.get(`events/${this.selectedEventId}`);
+        const response = await axiosAuth.get(`events/${this.selectedEventId}`);
         console.log(this.$route.params.id);
-        this.selectedEvent = result.data;
-        console.log(result);
+        this.selectedEvent = response.data;
+        console.log(response);
         this.isLoading = false;
       } catch (error) {
         console.log(error);
@@ -74,8 +74,8 @@ export default {
     },
     async closeEvent() {
       try {
-        const result = await axiosAuth.delete(`events/${this.selectedEventId}`);
-        console.log(result);
+        const response = await axiosAuth.delete(`events/${this.selectedEventId}`);
+        console.log(response);
         this.$router.push({ name: "eventsAll" });
         this.isLoading = false;
       } catch (error) {

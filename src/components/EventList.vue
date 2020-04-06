@@ -10,6 +10,9 @@
         <div class="my-3 p-3">
           <h2 class="display-5">{{event.name}}</h2>
         </div>
+            <div class="date">
+        {{event.dateTime}}
+         </div>
         <div>
           <div class="img">
             <img class="eventPicture" :src="event.imageURL" />
@@ -121,4 +124,9 @@ export default {
 </script>
 
 <style scoped>
+.date{
+    color:blueviolet;
+    font-size: 40px;
+    font-weight: bold;
+}
 </style>

@@ -27,6 +27,7 @@ export default {
   name: "app-profile",
   components: {},
   data() {
+    
   }
 };
 </script>
