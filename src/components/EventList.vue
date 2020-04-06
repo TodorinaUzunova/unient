@@ -45,7 +45,7 @@
 <script>
 //import AppMain from './shared/Main.vue';
 import AppNotFound from "@/components/NotFound.vue";
-import axiosAuth from "@/axios-auth";
+import axiosAuth from "@/axios-auth.js";
 
 function arrayValidator(arr) {
   return (
@@ -106,6 +106,7 @@ export default {
       try {
         const response = await axiosAuth.get("events");
         const allEvents = response.data;
+        console.log(allEvents);
         for (const _id in allEvents) {
           this.events.push({ _id, ...allEvents[_id] });
           this.isLoading = false;

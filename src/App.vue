@@ -46,6 +46,7 @@ export default {
   data: function() {
     return {
       isLoggedIn: localStorage.getItem("token") !== null,
+     
       
     };
   }
