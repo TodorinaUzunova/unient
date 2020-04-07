@@ -38,7 +38,6 @@ import axiosAuth from "@/axios-auth.js";
 
 export default {
   name: "app-event-details",
-
   props: {
     events: {
       type: Array
@@ -56,53 +55,55 @@ export default {
   },
   created() {
     this.getEventById();
+       
   },
   methods: {
     isOrganizer() {
       return localStorage.getItem("username") === this.selectedEvent.organizer;
     },
-    async getEventById() {
-      try {
-        const response = await axiosAuth.get(`events/${this.selectedEventId}`);
-        console.log(this.$route.params.id);
-        this.selectedEvent = response.data;
-        console.log(response);
-        this.isLoading = false;
-      } catch (error) {
-        console.log(error);
+     async getEventById() {
+        try {
+          const response = await axiosAuth.get(`events/${this.selectedEventId}`);
+          console.log(this.$route.params.id);
+          this.selectedEvent = response.data;
+          console.log(response);
+          this.isLoading = false;
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      async closeEvent() {
+        try {
+          const response = await axiosAuth.delete(`events/${this.selectedEventId}`);
+          console.log(response);
+          this.$router.push({ name: "eventsAll" });
+          this.isLoading = false;
+        } catch (error) {
+          console.log(error);
+        }
+      },
+      async joinTheEvent() {
+        try {
+          const payload = {
+            name: this.selectedEvent.name,
+            dateTime: this.selectedEvent.dateTime,
+            description: this.selectedEvent.description,
+            imageURL: this.selectedEvent.imageURL,
+            peopleInterestedIn: (this.selectedEvent.peopleInterestedIn += 1),
+            organizer: this.selectedEvent.organizer
+          };
+          const response = await axiosAuth.put(
+            `events/${this.selectedEvent._id}`,
+            payload
+          );
+          console.log(response.data);
+          this.$router.push("events/all");
+          this.isLoading = false;
+        } catch (error) {
+          console.log(error);
+        }
       }
-    },
-    async closeEvent() {
-      try {
-        const response = await axiosAuth.delete(`events/${this.selectedEventId}`);
-        console.log(response);
-        this.$router.push({ name: "eventsAll" });
-        this.isLoading = false;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    async joinTheEvent() {
-      try {
-        const payload = {
-          name: this.selectedEvent.name,
-          dateTime: this.selectedEvent.dateTime,
-          description: this.selectedEvent.description,
-          imageURL: this.selectedEvent.imageURL,
-          peopleInterestedIn: (this.selectedEvent.peopleInterestedIn += 1),
-          organizer: this.selectedEvent.organizer
-        };
-        const response = await axiosAuth.put(
-          `events/${this.selectedEvent._id}`,
-          payload
-        );
-        console.log(response.data);
-        this.$router.push("events/all");
-        this.isLoading = false;
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    
   }
 };
 </script>

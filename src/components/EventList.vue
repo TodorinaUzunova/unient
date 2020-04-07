@@ -43,9 +43,10 @@
 </template>
 
 <script>
-//import AppMain from './shared/Main.vue';
+
 import AppNotFound from "@/components/NotFound.vue";
-import axiosAuth from "@/axios-auth.js";
+//import axiosAuth from "@/axios-auth.js";
+import eventsMixin from '@/mixins/events-mixin.js';
 
 function arrayValidator(arr) {
   return (
@@ -58,6 +59,7 @@ function arrayValidator(arr) {
 }
 export default {
   name: "app-event-list",
+  mixins:[eventsMixin],
   props: {
     isLoggedIn: Boolean
   },
@@ -102,19 +104,19 @@ export default {
     }
   },
   methods: {
-    async getAllEvents() {
-      try {
-        const response = await axiosAuth.get("events");
-        const allEvents = response.data;
-        console.log(allEvents);
-        for (const _id in allEvents) {
-          this.events.push({ _id, ...allEvents[_id] });
-          this.isLoading = false;
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    // async getAllEvents() {
+    //   try {
+    //     const response = await axiosAuth.get("events");
+    //     const allEvents = response.data;
+    //     console.log(allEvents);
+    //     for (const _id in allEvents) {
+    //       this.events.push({ _id, ...allEvents[_id] });
+    //       this.isLoading = false;
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
   },
   computed: {
     eventsLength() {

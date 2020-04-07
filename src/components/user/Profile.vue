@@ -1,60 +1,61 @@
 <template>
+<div>
+<div v-if="isLoading">Loading...</div>
   <div class="row">
-    <img
-      class="profile-img col-md-6 text-center col-lg"
-      src="user-profile.jpg"
-    />
+    <img class="profile-img col-md-6 text-center col-lg" src="user-profile.jpg" />
 
     <div class="profile-info col-md-6 text-center col-lg">
       <h3>
         USERNAME:
         <span>{{ username }}</span>
       </h3>
-      <p class="infoType">ORGANIZER of {{ userEvents.length }} EVENTS.</p>
+      <p class="infoType">ORGANIZER of {{ userEventsLength }} EVENTS.</p>
       <div v-if="userEvents">
-        <ul v-for="(event, id) of userEvents" :key="id" class="list-group">
+        <ul v-for="(event, _id) of userEvents" :key="_id" class="list-group">
           <li class="list-group-item">
-            <router-link :to="({path:`/details/${event.id}`})">{{
+            <router-link :to="({path:`/details/${event._id}`})">
+              {{
               event.name
-            }}</router-link>
+              }}
+            </router-link>
           </li>
         </ul>
       </div>
-      <p v-if="noUserEvents" class="infoType">NO ORGANIZED EVENTS</p>
+      <p v-else class="infoType">NO ORGANIZED EVENTS</p>
     </div>
   </div>
+</div>
 </template>
 
 <script>
-import axiosAuth from "@/axios-auth.js"
+//import axiosAuth from "@/axios-auth.js";
+import eventsMixin from '@/mixins/events-mixin.js';
+
 export default {
   name: "app-profile",
+  mixins:[eventsMixin],
   components: {},
   data() {
     return {
       username: localStorage.getItem("username"),
-      userEvents: [],
-      userId : localStorage.getItem('userId'),
+      //userEvents: [],
+      userId: localStorage.getItem("userId"),
+      isLoading:true
     };
   },
-  created(){
-     this.getUserEvents();
+  beforeCreate() {
+    this.$emit("onAuth", localStorage.getItem("token") !== null);
+  },
+  created() {
+    this.getUserEvents();
   },
   methods: {
- getUserEvents(){
-     
-       const response= axiosAuth.get("events");
-      //`events/?query={"_acl.creator":"${this.userId}"}`)
-      console.log(response.data);
- }
-      // } catch (error) 
-      //   console.log(error);
-      //  
-      // }
+   
   },
   computed: {
-    noUserEvents() {
-      return this.userEvents.length === 0;
+    
+    userEventsLength() {
+      return this.userEvents.length;
     }
   }
 };

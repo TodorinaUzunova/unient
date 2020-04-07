@@ -63,37 +63,8 @@ import axiosAuth from '@/axios-auth.js';
 
 export default {
     name:'app-event-edit',
-    mixins:validationMixin,
-  //   props:{
-  //  selectedEvent:Object
-  //   },
-    // props:{
-    //        name:{
-    //          type:String,
-    //           required:true,
-    //          },
-    //       dateTime:{
-    //         type:Date,
-    //         required:true,
-    //         default:()=>{new Date('12/03/2020')}
-    //       },
-    //       description:{
-    //         type:String,
-    //         required:true,
-    //       },
-    //       imageURL:{
-    //         type:String,
-    //         required:true,
-    //       },
-    //       peopleInterestedIn:{
-    //         type:Number,
-    //         default:0
-    //       },
-    //       organizer:{
-    //         type:String
-    //       }
-    // },
-    data(){
+    mixins:[validationMixin],
+      data(){
       return{
           selectedEventId:this.$route.params.id,
           selectedEvent:Object,
