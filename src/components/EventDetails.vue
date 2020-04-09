@@ -28,29 +28,30 @@
         >Edit the event</router-link>
         <a class="btn btn-danger btn-lg" @click="closeEvent">Close the event</a>
       </div>
-      <a v-if="!isOrganizer()" class="btn btn-info btn-lg" @click="joinTheEvent">Join the event</a>
+      <a v-if="!isOrganizer()" class="btn btn-info btn-lg" @click="joinEvent">Join the event</a>
     </div>
   </div>
 </template>
 
 <script>
-import axiosAuth from "@/axios-auth.js";
-
+//import axiosAuth from "@/axios-auth.js";
+import eventsMixin from "@/mixins/events-mixin.js";
 export default {
   name: "app-event-details",
+  mixins:[eventsMixin],
   props: {
-    events: {
-      type: Array
-    }
+    // events: {
+    //   type: Array
+    // }
   },
   data() {
     return {
-      selectedEventId: this.$route.params.id,
-      selectedEvent: {
-        type: Object,
-        required: true
-      },
-      isLoading: true
+      // selectedEventId: this.$route.params.id,
+      // selectedEvent: {
+      //   type: Object,
+      //   required: true
+      // },
+      // isLoading: true
     };
   },
   beforeCreate() {
@@ -63,49 +64,53 @@ export default {
     isOrganizer() {
       return localStorage.getItem("username") === this.selectedEvent.organizer;
     },
+    
     async getEventById() {
-      try {
-        const response = await axiosAuth.get(`events/${this.selectedEventId}`);
-        console.log(this.$route.params.id);
-        this.selectedEvent = response.data;
-        console.log(response);
-        this.isLoading = false;
-      } catch (error) {
-        console.log(error);
-      }
+      this.getTheEventById();
+      // try {
+      //   const response = await axiosAuth.get(`events/${this.selectedEventId}`);
+      //   console.log(this.$route.params.id);
+      //   this.selectedEvent = response.data;
+      //   console.log(response);
+      //   this.isLoading = false;
+      // } catch (error) {
+      //   console.log(error);
+      // }
     },
     async closeEvent() {
-      try {
-        const response = await axiosAuth.delete(
-          `events/${this.selectedEventId}`
-        );
-        console.log(response);
-        this.$router.push({ name: "eventsAll" });
-        this.isLoading = false;
-      } catch (error) {
-        console.log(error);
-      }
+      this.closeTheEvent();
+      // try {
+      //   const response = await axiosAuth.delete(
+      //     `events/${this.selectedEventId}`
+      //   );
+      //   console.log(response);
+      //   this.$router.push({ name: "eventsAll" });
+      //   this.isLoading = false;
+      // } catch (error) {
+      //   console.log(error);
+      // }
     },
-    async joinTheEvent() {
-      try {
-        const payload = {
-          name: this.selectedEvent.name,
-          dateTime: this.selectedEvent.dateTime,
-          description: this.selectedEvent.description,
-          imageURL: this.selectedEvent.imageURL,
-          peopleInterestedIn: (this.selectedEvent.peopleInterestedIn += 1),
-          organizer: this.selectedEvent.organizer
-        };
-        const response = await axiosAuth.put(
-          `events/${this.selectedEvent._id}`,
-          payload
-        );
-        console.log(response.data);
-        this.$router.push("events/all");
-        this.isLoading = false;
-      } catch (error) {
-        console.log(error);
-      }
+    async joinEvent() {
+      this.joinTheEvent();
+      // try {
+      //   const payload = {
+      //     name: this.selectedEvent.name,
+      //     dateTime: this.selectedEvent.dateTime,
+      //     description: this.selectedEvent.description,
+      //     imageURL: this.selectedEvent.imageURL,
+      //     peopleInterestedIn: (this.selectedEvent.peopleInterestedIn += 1),
+      //     organizer: this.selectedEvent.organizer
+      //   };
+      //   const response = await axiosAuth.put(
+      //     `events/${this.selectedEvent._id}`,
+      //     payload
+      //   );
+      //   console.log(response.data);
+      //   this.$router.push("events/all");
+      //   this.isLoading = false;
+      // } catch (error) {
+      //   console.log(error);
+      // }
     }
   }
 };

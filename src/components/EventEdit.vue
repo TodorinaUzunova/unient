@@ -59,11 +59,12 @@ Vue.use(Vuelidate)
 import { validationMixin } from "vuelidate";
 import { required, email, integer} from "vuelidate/lib/validators";
 
-import axiosAuth from '@/axios-auth.js';
+//import axiosAuth from '@/axios-auth.js';
+import eventsMixin from "@/mixins/events-mixin.js";
 
 export default {
     name:'app-event-edit',
-    mixins:[validationMixin],
+    mixins:[validationMixin, eventsMixin],
       data(){
       return{
           selectedEventId:this.$route.params.id,
@@ -104,49 +105,53 @@ export default {
     this.$emit("onAuth", localStorage.getItem("token") !== null);
   },
     created(){
-      this.getEventById();
+      this.getTheEventToEdit();
     },
     methods:{
-  async getEventById() {
-      try {
-        const response = await axiosAuth.get(`events/${this.selectedEventId}`);
-        console.log(this.$route.params.id);
-        this.selectedEvent = response.data;
-        console.log(response);
-         this.name=this.selectedEvent.name,
-         this.dateTime=this.selectedEvent.dateTime,
-         this.description=this.selectedEvent.description,
-         this.imageURL=this.selectedEvent.imageURL,
-         this.peopleInterestedIn=this.selectedEvent.peopleInterestedIn,
-         this.organizer=this.selectedEvent.organizer
-        this.isLoading = false;
-      } catch (error) {
-        console.log(error);
-      }},
+  async getEventToEdit() {
+    this.getTheEventToEdit();
+      // try {
+      //   const response = await axiosAuth.get(`events/${this.selectedEventId}`);
+      //   console.log(this.$route.params.id);
+      //   this.selectedEvent = response.data;
+      //   console.log(response);
+      //    this.name=this.selectedEvent.name,
+      //    this.dateTime=this.selectedEvent.dateTime,
+      //    this.description=this.selectedEvent.description,
+      //    this.imageURL=this.selectedEvent.imageURL,
+      //    this.peopleInterestedIn=this.selectedEvent.peopleInterestedIn,
+      //    this.organizer=this.selectedEvent.organizer
+      //   this.isLoading = false;
+      // } catch (error) {
+      //   console.log(error);
+      // }
+      },
 
   async  submitEditHandler() {
       this.$v.$touch();
       if (this.$v.$error) {
         return;
       }
-       try {
-        const payload = {
-          name:this.name,
-          dateTime:this.dateTime,
-          description:this.description,
-          imageURL:this.imageURL,
-          peopleInterestedIn:this.peopleInterestedIn,
-          organizer:localStorage.getItem('username')
-        };
-        const response = await axiosAuth.put(`events/${this.selectedEvent._id}`, payload);
-        console.log(response.data);
-        console.log("Form is editted!");
-        this.$router.push("/events/all");
-        this.success = true;
-      } catch (error) {
-        console.log(error);
-        this.$v.$reset();
-      }}
+      this.editEvent();
+      //  try {
+      //   const payload = {
+      //     name:this.name,
+      //     dateTime:this.dateTime,
+      //     description:this.description,
+      //     imageURL:this.imageURL,
+      //     peopleInterestedIn:this.peopleInterestedIn,
+      //     organizer:localStorage.getItem('username')
+      //   };
+      //   const response = await axiosAuth.put(`events/${this.selectedEvent._id}`, payload);
+      //   console.log(response.data);
+      //   console.log("Form is editted!");
+      //   this.$router.push("/events/all");
+      //   this.success = true;
+      // } catch (error) {
+      //   console.log(error);
+      //   this.$v.$reset();
+      // }
+      }
     },
     
 }
