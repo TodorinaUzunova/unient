@@ -115,6 +115,9 @@ export default {
       isURL
     }
   },
+   beforeCreate() {
+    this.$emit("onAuth", localStorage.getItem("token") !== null);
+  },
   methods: {
   async  submitHandler() {
       this.$v.$touch();
@@ -130,8 +133,8 @@ export default {
           peopleInterestedIn:0,
           organizer:localStorage.getItem('username'),
         };
-        const result = await axiosAuth.post('events', payload);
-        console.log(result.data);
+        const response = await axiosAuth.post('events', payload);
+        console.log(response.data);
         console.log("Form is submitted!");
         this.$router.push("/events/all");
         this.success = true;

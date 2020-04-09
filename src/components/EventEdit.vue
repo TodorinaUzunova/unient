@@ -100,11 +100,14 @@ export default {
           }
 
     },
+     beforeCreate() {
+    this.$emit("onAuth", localStorage.getItem("token") !== null);
+  },
     created(){
       this.getEventById();
     },
     methods:{
-        async getEventById() {
+  async getEventById() {
       try {
         const response = await axiosAuth.get(`events/${this.selectedEventId}`);
         console.log(this.$route.params.id);
@@ -121,7 +124,7 @@ export default {
         console.log(error);
       }},
 
-         async  submitEditHandler() {
+  async  submitEditHandler() {
       this.$v.$touch();
       if (this.$v.$error) {
         return;
