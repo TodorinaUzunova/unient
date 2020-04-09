@@ -68,12 +68,7 @@
         </template>
       </div>
 
-      <button
-        :disabled="$v.$invalid"
-        class="btn btn-lg btn-dark btn-block"
-        type="submit"
-       
-      >Register</button>
+      <button :disabled="$v.$invalid" class="btn btn-lg btn-dark btn-block" type="submit">Register</button>
 
       <div class="text-center mb-4">
         <p class="alreadyUser">
@@ -100,7 +95,7 @@ import {
   sameAs
 } from "vuelidate/lib/validators";
 import { helpers } from "vuelidate/lib/validators";
-import axiosAuth from '@/axios-auth.js';
+import userMixin from "@/mixins/user-mixin.js";
 
 // function sameAs(field) {
 //   return function(value) {
@@ -111,13 +106,13 @@ import axiosAuth from '@/axios-auth.js';
 const alphanumeric = helpers.regex("alphanumeric", /^[A-Za-z0-9]*$/);
 export default {
   name: "app-register",
-  mixins: [validationMixin],
+  mixins: [validationMixin, userMixin],
   data() {
     return {
       username: "",
       password: "",
       rePassword: "",
-      success: false
+      success: true,
     };
   },
   validations: {
@@ -141,23 +136,13 @@ export default {
       if (this.$v.$invalid) {
         return;
       }
-      try {
-        const payload = {
+      const payload = {
         username: this.username,
-        password: this.password,
+        password: this.password
       };
-       const result =await axiosAuth.post('', payload)  
-        console.log(result.data);
-        // localStorage.setItem('token', result.data._kmd.authtoken);
-        // localStorage.setItem('userInfo', JSON.stringify(result.data));
-           this.success = true;
-         console.log("Form is submitted!");
-        this.$router.push('/login');
-      } catch (error) {
-        console.log(error);
-             this.$v.$reset();
-      }}
-   }
+      this.register(payload);
+    }
+  }
 };
 </script>
 

@@ -9,6 +9,7 @@ import AppEventList from "@/components/EventList.vue";
 import AppEventDetails from "@/components/EventDetails.vue";
 import AppEventEdit from "@/components/EventEdit.vue";
 import AppProfile from "@/components/user/Profile.vue";
+import AppPageNotFound from "@/components/shared/PageNotFound.vue";
 
 const authGuard = function (to, from, next) {
   if (localStorage.getItem("token") === null) {
@@ -51,9 +52,7 @@ const routes = [
   { path: "/user/profile", name: "profile", component: AppProfile },
   {
     path: "*",
-    component: () => {
-      import("@/components/shared/PageNotFound.vue");
-    },
+    component: AppPageNotFound
   },
 ];
 

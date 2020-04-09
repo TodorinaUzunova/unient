@@ -75,12 +75,12 @@ import {
   email
 } from "vuelidate/lib/validators";
 import { helpers } from "vuelidate/lib/validators";
-import axiosAuth from "@/axios-auth.js";
+import userMixin from "@/mixins/user-mixin.js";
 
 const alphanumeric = helpers.regex("alphanumeric", /^[A-Za-z0-9]*$/);
 export default {
   name: "app-login",
-  mixins: [validationMixin],
+  mixins: [validationMixin, userMixin],
   props: {
     isLoggedIn: Boolean
   },
@@ -88,7 +88,7 @@ export default {
     return {
       username: "",
       password: "",
-      success: false
+      success:false
     };
   },
   validations: {
@@ -110,24 +110,11 @@ export default {
       if (this.$v.$invalid) {
         return;
       }
-      try {
-        const payload = {
-          username: this.username,
-          password: this.password
-        };
-        const response = await axiosAuth.post("login", payload);
-        console.log(response.data);
-        localStorage.setItem("token", response.data._kmd.authtoken);
-        // localStorage.setItem("userInfo", JSON.stringify(response.data));
-        localStorage.setItem("username", response.data.username);
-        localStorage.setItem("userId", response.data._id);
-        console.log("Form is submitted!");
-        this.$router.push("/events/all");
-        this.success = true;
-      } catch (error) {
-        console.log(error);
-        this.$v.$reset();
-      }
+      const payload = {
+        username: this.username,
+        password: this.password
+      };
+      this.login(payload);
     }
   }
 };

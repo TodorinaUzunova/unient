@@ -10,14 +10,12 @@
         <div class="my-3 p-3">
           <h2 class="display-5">{{event.name}}</h2>
         </div>
-            <div class="date">
-        {{event.dateTime}}
-         </div>
+        <div class="date">{{event.dateTime}}</div>
         <div>
           <div class="img">
             <img class="eventPicture" :src="event.imageURL" />
           </div>
-          <router-link :to="{path:`/details/${event._id}`}" tag="button" class="eventDetails">More</router-link>
+          <router-link :to="event| eventDetailsLink" tag="button" class="eventDetails">More</router-link>
           {{$route.params.id}}
         </div>
       </div>
@@ -43,10 +41,9 @@
 </template>
 
 <script>
-
 import AppNotFound from "@/components/NotFound.vue";
 //import axiosAuth from "@/axios-auth.js";
-import eventsMixin from '@/mixins/events-mixin.js';
+import eventsMixin from "@/mixins/events-mixin.js";
 
 function arrayValidator(arr) {
   return (
@@ -59,7 +56,7 @@ function arrayValidator(arr) {
 }
 export default {
   name: "app-event-list",
-  mixins:[eventsMixin],
+  mixins: [eventsMixin],
   props: {
     isLoggedIn: Boolean
   },
@@ -103,33 +100,24 @@ export default {
       arrayValidator
     }
   },
-  methods: {
-    // async getAllEvents() {
-    //   try {
-    //     const response = await axiosAuth.get("events");
-    //     const allEvents = response.data;
-    //     console.log(allEvents);
-    //     for (const _id in allEvents) {
-    //       this.events.push({ _id, ...allEvents[_id] });
-    //       this.isLoading = false;
-    //     }
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // }
-  },
+  methods: {},
   computed: {
     eventsLength() {
       return this.events.length !== 0;
+    }
+  },
+  filters: {
+    eventDetailsLink(event) {
+      return `/details/${event._id}`;
     }
   }
 };
 </script>
 
 <style scoped>
-.date{
-    color:blueviolet;
-    font-size: 40px;
-    font-weight: bold;
+.date {
+  color: blueviolet;
+  font-size: 40px;
+  font-weight: bold;
 }
 </style>

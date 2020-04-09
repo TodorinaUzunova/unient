@@ -1,7 +1,7 @@
 <template>
      <div class="col-md-12">
         <div id="fouronefour">
-          <img class="no-found-picture" src="404face.png" />
+          <img class="no-found-picture" src="/404face.png" />
         </div>
         <div class="error-template">
           <h1>

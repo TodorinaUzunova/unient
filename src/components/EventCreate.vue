@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="success">Event created successfully!</div>
-    <form @submit.prevent="submitHandler">
+    <form @submit.prevent="submitCreateHandler">
       <div class="text-center mb-4">
         <h1 class="h3 mb-3 font-weight-normal">Organize Event</h1>
         <p>Fill up the following information!</p>
@@ -40,13 +40,11 @@
         </template>
       </div>
 
-      
-     
-        <vue-editor    v-model="description"    @blur="$v.description.$touch"/>
-        <label for="description">Description</label>
-        <template v-if="$v.description.$error">
-          <p v-if="!$v.description.required" class="alert alert-danger">Description is required!</p>
-        </template>
+      <vue-editor v-model="description" @blur="$v.description.$touch" />
+      <label for="description">Description</label>
+      <template v-if="$v.description.$error">
+        <p v-if="!$v.description.required" class="alert alert-danger">Description is required!</p>
+      </template>
 
       <div class="form-label-group">
         <input
@@ -58,9 +56,9 @@
           v-model="imageURL"
           @blur="$v.imageURL.$touch"
           autofocus
-        /> 
+        />
         <label for="inputEventImage">Image</label>
-            <template v-if="$v.imageURL.$error">
+        <template v-if="$v.imageURL.$error">
           <p v-if="!$v.imageURL.required" class="alert alert-danger">Image is required!</p>
           <p v-else-if="!$v.imageURL.isURL" class="alert alert-danger">Image url is not valid!</p>
         </template>
@@ -80,18 +78,18 @@
 <script>
 import { VueEditor } from "vue2-editor";
 import { validationMixin } from "vuelidate";
-import {
- required
-} from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 import { helpers } from "vuelidate/lib/validators";
-//import axiosAuth from '@/axios-auth.js';
 import eventsMixin from "@/mixins/events-mixin.js";
 
-const isURL=helpers.regex('url', /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g);
+const isURL = helpers.regex(
+  "url",
+  /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g
+);
 
 export default {
   name: "app-event-create",
-  mixins:[validationMixin, eventsMixin],
+  mixins: [validationMixin, eventsMixin],
   data() {
     return {
       name: "",
@@ -106,7 +104,7 @@ export default {
       required
     },
     dateTime: {
-      required,
+      required
     },
     description: {
       required
@@ -116,53 +114,42 @@ export default {
       isURL
     }
   },
-   beforeCreate() {
+  beforeCreate() {
     this.$emit("onAuth", localStorage.getItem("token") !== null);
   },
   methods: {
-  async  submitHandler() {
+    async submitCreateHandler() {
       this.$v.$touch();
       if (this.$v.$error) {
         return;
       }
-      this.createEvent();
-      //  try {
-      //   const payload = {
-      //     name: this.name,
-      //     dateTime: this.dateTime,
-      //     description:this.description,
-      //     imageURL:this.imageURL,
-      //     peopleInterestedIn:0,
-      //     organizer:localStorage.getItem('username'),
-      //   };
-      //   const response = await axiosAuth.post('events', payload);
-      //   console.log(response.data);
-      //   console.log("Form is submitted!");
-      //   this.$router.push("/events/all");
-      //   this.success = true;
-      // } catch (error) {
-      //   console.log(error);
-      //   this.$v.$reset();
-      //}
-      }
-    },
-  components:{
-      VueEditor
-      }
+      const event = {
+        name: this.name,
+        dateTime: this.dateTime,
+        description: this.description,
+        imageURL: this.imageURL,
+        peopleInterestedIn: 0,
+        organizer: localStorage.getItem("username")
+      };
+      this.createEvent(event);
+    }
+  },
+  components: {
+    VueEditor
+  }
 };
 </script>
 
 <style>
-p.alert{
-   width: 50%;
-   margin: 0 auto;
-   text-align: center;
-   margin-top: 1%;
-   margin-bottom: 3%;
+p.alert {
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  margin-top: 1%;
+  margin-bottom: 3%;
 }
 
-p.alert-danger{
-  
+p.alert-danger {
   text-decoration-color: red;
 }
 </style>

@@ -22,10 +22,7 @@
         </p>
       </div>
       <div v-if="isOrganizer()">
-        <router-link
-          :to="({path:`/edit/${selectedEvent._id}`})"
-          class="btn btn-primary btn-lg"
-        >Edit the event</router-link>
+        <router-link :to="selectedEvent|eventEditLink" class="btn btn-primary btn-lg">Edit the event</router-link>
         <a class="btn btn-danger btn-lg" @click="closeEvent">Close the event</a>
       </div>
       <a v-if="!isOrganizer()" class="btn btn-info btn-lg" @click="joinEvent">Join the event</a>
@@ -34,11 +31,10 @@
 </template>
 
 <script>
-//import axiosAuth from "@/axios-auth.js";
 import eventsMixin from "@/mixins/events-mixin.js";
 export default {
   name: "app-event-details",
-  mixins:[eventsMixin],
+  mixins: [eventsMixin],
   props: {
     // events: {
     //   type: Array
@@ -64,53 +60,28 @@ export default {
     isOrganizer() {
       return localStorage.getItem("username") === this.selectedEvent.organizer;
     },
-    
+
     async getEventById() {
       this.getTheEventById();
-      // try {
-      //   const response = await axiosAuth.get(`events/${this.selectedEventId}`);
-      //   console.log(this.$route.params.id);
-      //   this.selectedEvent = response.data;
-      //   console.log(response);
-      //   this.isLoading = false;
-      // } catch (error) {
-      //   console.log(error);
-      // }
     },
     async closeEvent() {
       this.closeTheEvent();
-      // try {
-      //   const response = await axiosAuth.delete(
-      //     `events/${this.selectedEventId}`
-      //   );
-      //   console.log(response);
-      //   this.$router.push({ name: "eventsAll" });
-      //   this.isLoading = false;
-      // } catch (error) {
-      //   console.log(error);
-      // }
     },
     async joinEvent() {
-      this.joinTheEvent();
-      // try {
-      //   const payload = {
-      //     name: this.selectedEvent.name,
-      //     dateTime: this.selectedEvent.dateTime,
-      //     description: this.selectedEvent.description,
-      //     imageURL: this.selectedEvent.imageURL,
-      //     peopleInterestedIn: (this.selectedEvent.peopleInterestedIn += 1),
-      //     organizer: this.selectedEvent.organizer
-      //   };
-      //   const response = await axiosAuth.put(
-      //     `events/${this.selectedEvent._id}`,
-      //     payload
-      //   );
-      //   console.log(response.data);
-      //   this.$router.push("events/all");
-      //   this.isLoading = false;
-      // } catch (error) {
-      //   console.log(error);
-      // }
+      const joinedEvent = {
+        name: this.selectedEvent.name,
+        dateTime: this.selectedEvent.dateTime,
+        description: this.selectedEvent.description,
+        imageURL: this.selectedEvent.imageURL,
+        peopleInterestedIn: (this.selectedEvent.peopleInterestedIn += 1),
+        organizer: this.selectedEvent.organizer
+      };
+      this.joinTheEvent(joinedEvent);
+    }
+  },
+  filters: {
+    eventEditLink(selectedEvent) {
+      return `/edit/${selectedEvent._id}`;
     }
   }
 };
